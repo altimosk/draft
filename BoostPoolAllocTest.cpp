@@ -6,7 +6,10 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include <set>
+#include <vector>
+#include<math.h>
 
+using std::vector;
 using std::multiset;
 using std::list;
 using boost::pool_allocator;
@@ -14,104 +17,64 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-const int m = 100000;
-
 int main()
 {
-    /*time_t now1, end1, now2, end2;
-
+    int testVectorSize = 10000;
+    time_t now1, end1;
     list<int, pool_allocator<int> > pool_allocator_list;
     list<int, std::allocator<int> > standart_allocator_list;
+    vector<int> binary;
+    vector<int*> pointer1;
+    vector<int*> pointer2;
+    multiset<int> first, second;
+    pool_allocator<int> palloc;
 
+    binary.resize(testVectorSize);
+    pointer2.resize(testVectorSize);
+    pointer1.resize(testVectorSize);
 
-    for (auto i = 1; i < 3*m; i++)
+    cin >> testVectorSize;
+
+    for (auto i = 1; i < 3*testVectorSize; i++)
     {
         pool_allocator_list.push_back(i);
         standart_allocator_list.push_back(i);
     }
-
-
     time(&now1);
-    for (auto i = 1; i < m; i++)
+    for (auto i = 1; i < testVectorSize; i++)
     {
         pool_allocator_list.remove(2*i);
     }
 
-    for (auto i = 1; i < m; i++)
+    for (auto i = 1; i < testVectorSize; i++)
     {
         pool_allocator_list.push_back(2*i);
     }
-     
+    cout << "list with pool_allocation time = ";
     time(&end1);
-    cout << now1 << " s" << endl;
-    cout << end1 << " s" << endl;
     cout << -difftime(now1, end1) << " s" << endl;
 
-    time(&now2);
-    for (auto i = 1; i < m; i++)
+    time(&now1);
+    for (auto i = 1; i < testVectorSize; i++)
     {
         standart_allocator_list.remove(2 * i);
     }
 
-    for (auto i = 1; i < m; i++)
+    for (auto i = 1; i < testVectorSize; i++)
     {
         standart_allocator_list.push_back(2*i);
     }
 
-    time(&end2);
-    cout << now2 << " s" << endl;
-    cout << end2 << " s" << endl;
-    cout << -difftime(now2, end2) << " s" << endl;
-
-    
-    
-    
-    
-    srand(time(NULL));
-    time(&now1);
-    for (auto i = 1; i < m; i++)
-    {
-        pool_allocator_list.remove(rand() %m + 1);
-    }
-
-    for (auto i = 1; i < m; i++)
-    {
-        pool_allocator_list.push_back(rand() % m + 1);
-    }
-
     time(&end1);
-    cout << now1 << " s" << endl;
-    cout << end1 << " s" << endl;
+    cout << "list with standart allocation time = ";
     cout << -difftime(now1, end1) << " s" << endl;
 
-    time(&now2);
-    for (auto i = 1; i < m; i++)
+    for (int i = 0; i < testVectorSize; i++)
     {
-        standart_allocator_list.remove(rand() % m + 1);
+        binary[i] = (i*i*i*i*i %3)%2;
     }
-
-    for (auto i = 1; i < m; i++)
-    {
-        standart_allocator_list.push_back(rand() % m + 1);
-    }
-
-    time(&end2);
-    cout << now2 << " s" << endl;
-    cout << end2 << " s" << endl;
-    cout << -difftime(now2, end2) << " s" << endl;*/
-    multiset<int> first,second;
-    int binary[m];
-    int* pointer1[m];
-    int* pointer2[m];
-    srand(time(NULL));
-    for (int i = 0; i < m; i++)
-    {
-        binary[i] = rand() % 2;
-    }
-    time_t now1, end1;
-    pool_allocator<int> palloc;
     time(&now1);
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < testVectorSize; i++)
     {
         if (binary[i])
         {
@@ -134,9 +97,9 @@ int main()
         }
     }
     time(&end1);
-    cout << difftime(end1, now1) << endl;
-    /*time(&now1);
-    for (int i = 0; i < m; i++)
+    cout << "pointers to int random vector witn pool allocator time = " << difftime(end1, now1) << endl;
+    time(&now1);
+    for (int i = 0; i < testVectorSize; i++)
     {
         if (binary[i])
         {
@@ -159,6 +122,6 @@ int main()
         }
     }
     time(&end1);
-    cout << difftime(end1, now1) << endl;*/
+    cout << "pointers to int random vector witn new/delete allocator time = " << difftime(end1, now1) << endl;
     return 0;
 }
